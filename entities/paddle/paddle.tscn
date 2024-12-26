@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://cem4442aqdjha"]
+
+[ext_resource type="Script" path="res://entities/paddle/paddle.gd" id="1_3icib"]
+[ext_resource type="PackedScene" uid="uid://02nk12vwa22j" path="res://entities/hitbox/hitbox.tscn" id="2_13jqd"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p1fo8"]
+size = Vector2(16, 112)
+
+[node name="Paddle" type="CharacterBody2D"]
+script = ExtResource("1_3icib")
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(-8, -56, 8, -56, 8, 56, -8, 56)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_p1fo8")
+
+[node name="Hitbox" parent="." groups=["paddle"] instance=ExtResource("2_13jqd")]

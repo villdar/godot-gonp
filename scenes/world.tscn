@@ -1,0 +1,34 @@
+[gd_scene load_steps=4 format=3 uid="uid://ds2rvo7bw33lg"]
+
+[ext_resource type="PackedScene" uid="uid://cem4442aqdjha" path="res://entities/paddle/paddle.tscn" id="1_na8ek"]
+[ext_resource type="PackedScene" uid="uid://e4y4kpii6xo6" path="res://entities/ball/ball.tscn" id="2_3ijyd"]
+[ext_resource type="Script" path="res://managers/level_manager/level_manager.gd" id="3_oex0p"]
+
+[node name="World" type="Node2D"]
+
+[node name="LevelManager" type="Node" parent="." node_paths=PackedStringArray("ball", "left_paddle", "right_paddle")]
+script = ExtResource("3_oex0p")
+ball = NodePath("../Ball")
+left_paddle = NodePath("../LeftPaddle")
+right_paddle = NodePath("../RightPaddle")
+
+[node name="Background" type="ColorRect" parent="."]
+offset_right = 1280.0
+offset_bottom = 720.0
+color = Color(0, 0, 0, 1)
+
+[node name="Camera" type="Camera2D" parent="."]
+position = Vector2(640, 360)
+
+[node name="LeftPaddle" parent="." node_paths=PackedStringArray("ball") instance=ExtResource("1_na8ek")]
+position = Vector2(120, 384)
+ball = NodePath("../Ball")
+
+[node name="RightPaddle" parent="." node_paths=PackedStringArray("ball") instance=ExtResource("1_na8ek")]
+position = Vector2(1160, 384)
+is_player_one = false
+is_ai = true
+ball = NodePath("../Ball")
+
+[node name="Ball" parent="." instance=ExtResource("2_3ijyd")]
+position = Vector2(640, 360)
