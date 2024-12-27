@@ -5,7 +5,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ks0h5"]
 size = Vector2(16, 16)
 
-[node name="Ball" type="Area2D"]
+[node name="Ball" type="Area2D" groups=["ball"]]
 script = ExtResource("1_ntnix")
 
 [node name="Polygon2D" type="Polygon2D" parent="."]

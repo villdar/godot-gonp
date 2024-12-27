@@ -30,38 +30,65 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	if (is_ai):
-		if ((ball.position.x > viewport_size.x * 0.5)):
-			if (position.y > 0 + (player_height * 0.5) and (ai_desired_y_destination - ai_start_position.y < 0)):
-				if ai_desired_y_destination < position.y - 5 or ai_desired_y_destination > position.y + 5:
-					position.y = lerp(ai_start_position.y, ai_desired_y_destination, ai_current_speed / ai_max_speed)
-					ai_current_speed = lerp(ai_current_speed, ai_max_speed, ai_acceleration * delta)
-				else:
-					ai_current_speed = 0.0
-			elif (position.y < viewport_size.y - (player_height * 0.5) and (ai_desired_y_destination - ai_start_position.y > 0)):
-				if ai_desired_y_destination < position.y - 5 or ai_desired_y_destination > position.y + 5:
-					position.y = lerp(ai_start_position.y, ai_desired_y_destination, ai_current_speed / ai_max_speed)
-					ai_current_speed = lerp(ai_current_speed, ai_max_speed, ai_acceleration * delta)
-				else: 
-					ai_current_speed = 0.0
+	if ((is_ai) and (ball.position.x > viewport_size.x * 0.5)):
+		calculate_ai_movement(delta)
 	else:
-		if (Input.is_action_pressed(player_up_action) and (position.y > 0 + (player_height * 0.5))):
-			position.y -= max_speed * delta
-		elif (Input.is_action_pressed(player_down_action) and (position.y < viewport_size.y - (player_height * 0.5))):
-			position.y += max_speed * delta
+		get_player_input(delta)
 
 
-func predict_ball_destination(delta: float) -> void:
+
+func get_player_input(delta):
+	if (Input.is_action_pressed(player_up_action) and (position.y > 0 + (player_height * 0.5))):
+		position.y -= max_speed * delta
+	elif (Input.is_action_pressed(player_down_action) and (position.y < viewport_size.y - (player_height * 0.5))):
+		position.y += max_speed * delta
+
+
+func calculate_ai_movement(delta):
+	var half_player_height = player_height * 0.5
+	var ai_move_direction = ai_desired_y_destination - ai_start_position.y
+	
+	if ((position.y > 0 + half_player_height) and 
+		(ai_move_direction < 0) and 
+		paddle_within_destination_bounds()):
+			position.y = lerp(ai_start_position.y, ai_desired_y_destination, ai_current_speed / ai_max_speed)
+			ai_current_speed = lerp(ai_current_speed, ai_max_speed, ai_acceleration * delta)
+	elif ((position.y < viewport_size.y - half_player_height) and 
+		(ai_move_direction > 0) and 
+		paddle_within_destination_bounds()):
+			position.y = lerp(ai_start_position.y, ai_desired_y_destination, ai_current_speed / ai_max_speed)
+			ai_current_speed = lerp(ai_current_speed, ai_max_speed, ai_acceleration * delta)
+	else: 
+		ai_current_speed = 0.0
+
+
+func paddle_within_destination_bounds():
+	return (ai_desired_y_destination < position.y - 5 or 
+		ai_desired_y_destination > position.y + 5)
+
+
+func predict_ball_destination() -> void:
 	if (ball.direction.x > 0):
-		var temp_ball_position = ball.position
-		var temp_ball_direction = ball.direction
-		var temp_speed = ball.speed
-		while temp_ball_position.x < position.x:
-			temp_ball_position.x += (temp_ball_direction.x * delta * temp_speed)
-			temp_ball_position.y += (temp_ball_direction.y * delta * temp_speed)
-			
-			if temp_ball_position.y < 0 or temp_ball_position.y > viewport_size.y:
-				temp_ball_direction *= -1
+		#var temp_ball_position = ball.position
+		#var temp_ball_direction = ball.direction
+		#var temp_speed = ball.speed
+		#while temp_ball_position.x < position.x:
+			#temp_ball_position.x += (temp_ball_direction.x * delta * temp_speed)
+			#temp_ball_position.y += (temp_ball_direction.y * delta * temp_speed)
+			#
+			#
+			#if temp_ball_position.y < 0 or temp_ball_position.y > viewport_size.y:
+				#temp_ball_direction.y *= -1
+		#
+	
+		var ball_displacement_y = (position.x - ball.position.x) * ball.direction.y / ball.direction.x
+		var arena_height = viewport_size.y
+		var final_y = abs(wrapf(ball.position.y + ball_displacement_y, -arena_height, arena_height))
 		
-		ai_desired_y_destination = temp_ball_position.y
+		ai_desired_y_destination = final_y
 		ai_start_position = position
+
+
+func reset(start_position: Vector2):
+	position = start_position
+	ai_desired_y_destination = start_position.y

@@ -3,6 +3,7 @@ class_name Ball
 extends Area2D
 
 signal ball_has_hit_paddle
+signal x_boundry_hit(boundry: String)
 
 @export var speed: float = 600.0
 var direction: Vector2 = Vector2(1, 0)
@@ -20,6 +21,18 @@ func _physics_process(delta: float) -> void:
 
 	if position.y < 0 or position.y > viewport_size.y:
 		direction.y *= -1
+	elif position.x < 0:
+		x_boundry_hit.emit("left_boundry")
+	elif position.x > viewport_size.x:
+		x_boundry_hit.emit("right_boundry")
+
+
+func reset(boundry: String, start_position: Vector2):
+	position = start_position
+	var newDirection = Vector2(1, 0)
+	if (boundry == "left_boundry"):
+		newDirection = Vector2(-1, 0)
+	direction = newDirection
 
 
 func _on_paddle_hit(area: Area2D):
