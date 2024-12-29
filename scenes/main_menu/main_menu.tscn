@@ -1,0 +1,79 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0d1sqcwrxx63"]
+
+[ext_resource type="Script" path="res://scenes/main_menu/main_menu.gd" id="1_rkwgv"]
+
+[node name="MainMenu" type="Node2D"]
+script = ExtResource("1_rkwgv")
+
+[node name="Background" type="ColorRect" parent="."]
+offset_right = 1280.0
+offset_bottom = 720.0
+color = Color(0, 0, 0, 1)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -72.0
+offset_right = 72.0
+offset_bottom = 145.0
+grow_horizontal = 2
+
+[node name="P1HighScore" type="Label" parent="CanvasLayer/Control/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"HeaderLarge"
+text = "0"
+
+[node name="Spacer" type="Label" parent="CanvasLayer/Control/HBoxContainer2"]
+layout_mode = 2
+text = "                                                                          "
+
+[node name="P2HighScore" type="Label" parent="CanvasLayer/Control/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"HeaderLarge"
+text = "0"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/HBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="GameTitle" type="Label" parent="CanvasLayer/Control/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"HeaderLarge"
+text = "Gonp"
+horizontal_alignment = 1
+
+[node name="StartButton" type="Button" parent="CanvasLayer/Control/HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Start"
+
+[node name="QuitButton" type="Button" parent="CanvasLayer/Control/HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Quit"
+
+[connection signal="button_down" from="CanvasLayer/Control/HBoxContainer/VBoxContainer/StartButton" to="." method="_on_start_button_button_down"]
+[connection signal="button_down" from="CanvasLayer/Control/HBoxContainer/VBoxContainer/QuitButton" to="." method="_on_quit_button_button_down"]

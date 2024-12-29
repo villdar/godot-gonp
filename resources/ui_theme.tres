@@ -1,0 +1,5 @@
+[gd_resource type="Theme" format=3 uid="uid://bp47301ctqdqw"]
+
+[resource]
+Button/font_sizes/font_size = 56
+HeaderLarge/font_sizes/font_size = 120
