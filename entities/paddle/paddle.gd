@@ -19,6 +19,9 @@ var ai_acceleration: float = 3.0
 var player_up_action = "p1up"
 var player_down_action = "p1down"
 
+const MAX_MISS_AMOUNT = 100
+
+var random = RandomNumberGenerator.new()
 
 func _ready() -> void:
 	viewport_size = get_viewport().get_visible_rect().size
@@ -85,7 +88,7 @@ func predict_ball_destination() -> void:
 		var arena_height = viewport_size.y
 		var final_y = abs(wrapf(ball.position.y + ball_displacement_y, -arena_height, arena_height))
 		
-		ai_desired_y_destination = final_y
+		ai_desired_y_destination = final_y + random.randf_range(-MAX_MISS_AMOUNT, MAX_MISS_AMOUNT)
 		ai_start_position = position
 
 
