@@ -2,6 +2,8 @@ class_name ScoreManager
 
 extends Node
 
+@export var ui: UI
+
 var ball: Ball
 
 var player_one_score = 0
@@ -21,7 +23,7 @@ func _ready() -> void:
 func _on_x_boundry_hit(boundry: String):
 	if boundry == "right_boundry":
 		player_one_score += 1
-		print("Player 1: ", player_one_score)
+		ui.set_player_one_score_text(str(player_one_score))
 	else:
 		player_two_score += 1
-		print("Player 2: ", player_two_score)
+		ui.set_player_two_score_text(str(player_two_score))
